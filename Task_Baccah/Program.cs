@@ -5,9 +5,10 @@
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-
-            NumberConversionInArabic n = new NumberConversionInArabic(199);
-            Console.WriteLine(n.startComputing());
+            numbersConversion english = new numbersConversion(457);
+            NumberConversionInArabic arabic = new NumberConversionInArabic(199);
+            Console.WriteLine(arabic.startComputing());
+            Console.WriteLine(english.startComputing());
             Console.ReadLine();
         }
     }

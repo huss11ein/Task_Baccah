@@ -57,7 +57,6 @@ namespace Task_Baccah
         }
         private string getLessThanTwenty(long number)
         {
-            Console.WriteLine(number);
             if (number >= 0 && number <= 9)
                 return basicNumbersBelowNine[number];
             else
