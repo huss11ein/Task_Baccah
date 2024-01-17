@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,11 +31,14 @@ namespace Task_Baccah
 {
     "", "", "عشرون", "ثلاثون", "أربعون", "خمسون", "ستون", "سبعون", "ثمانون", "تسعون"
 };
-        string[] numbers100200 = new string[4] {
+        string[] numbers100200 = new string[7] {
         "مائة",
         "مأتان",
             "ألف",
-            "الفان"
+            "الفان",
+            "آلاف",
+            "مليون",
+            "ملايين"
         };
 
         private double convertedNumber;
@@ -92,18 +96,49 @@ namespace Task_Baccah
         private string getHundereds(long number)
         {
             string hundredText = "";
+            
             bool isUnique = false;
             if (number / 100 == 1 || number / 100 == 2)
             {
-                hundredText += numbers100200[(number / 100) - 1];
+                hundredText = numbers100200[(number / 100) -1];
                 isUnique = true;
             }
             if (number % 100 == 0)
-                return isUnique == true ? hundredText : basicNumbersBelowNine[number % 100] + "مائة";
+                return isUnique == true ? hundredText : basicNumbersBelowNine[number / 100] + " مائة";
             else
-                return (isUnique == true ? (hundredText) : (basicNumbersBelowNine[number % 100] + "مائة")) + " و " + returnResultInEnglish(number % 100);
+                return (isUnique == true ? (hundredText) : (basicNumbersBelowNine[number / 100] + " مائة")) + " و " + returnResultInEnglish(number % 100);
 
 
+        }
+
+        private string getThousands(long number) {
+            string thousandText = "";
+
+            bool isUnique = false;
+            if (number / 1000 == 1 || number / 1000 == 2)
+            {
+                thousandText = numbers100200[(number / 1000) +1];
+                isUnique = true;
+            }
+            if (number % 1000 == 0)
+                return (isUnique == true ? thousandText : returnResultInEnglish(number / 1000)) +(number <= 10000 ? " آلاف" : "ألف");
+            else
+                return (isUnique == true ? (thousandText) : (returnResultInEnglish(number / 1000) + (number <= 10000 ? " آلاف" : "ألف"))) + " و " + returnResultInEnglish(number % 1000);
+
+
+        }
+        private string getMillions(long number) {
+            
+
+            bool isUnique = false;
+            if (number / 1000000 == 1 || number / 1000000 == 2)
+            {
+                isUnique = true;
+            }
+            if (number % 1000 == 0)
+                return isUnique == true ? "مليون" : basicNumbersBelowNine[number / 1000000] + " ملايين";
+            else
+                return (isUnique == true ? ("مليون") : (basicNumbersBelowNine[number / 1000000] + " ملايين")) + " و " + returnResultInEnglish(number % 1000000);
         }
 
         private string returnResultInEnglish(long number)
@@ -122,10 +157,7 @@ namespace Task_Baccah
 
             else if (number < 1000000)
             { //600000
-                if (number % 1000 == 0)
-                    return returnResultInEnglish(number / 1000) + " الف ";
-                else
-                    return returnResultInEnglish(number / 1000) + " الف " + " و " + returnResultInEnglish(number % 1000);
+                return getThousands(number);
             }
 
             else if (number < 1000000000) //600000000
