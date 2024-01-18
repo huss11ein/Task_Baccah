@@ -38,7 +38,8 @@ namespace Task_Baccah
             "الفان",
             "آلاف",
             "مليون",
-            "ملايين"
+            "مليونان"
+           
         };
 
         private double convertedNumber;
@@ -59,13 +60,7 @@ namespace Task_Baccah
                 pos = "سالب";
             }
         }
-        private string getLessThanTwenty(long number)
-        {
-            if (number >= 0 && number <= 9)
-                return basicNumbersBelowNine[number];
-            else
-                return basicNumbersAboveNine[number - 10];
-        }
+       
         #region stillnotcompleted
         /* public long numbersAfterPoint(double number) {
              if (number == 0)
@@ -77,15 +72,25 @@ namespace Task_Baccah
         {
             if (isFloat)
             {
-                return pos + " " + returnResultInEnglish((long)convertedNumber) + " و ";
+                return pos + " " + returnResultInArabic((long)convertedNumber) + " و ";
             }
             else
             {
-                return pos + " " + returnResultInEnglish((long)convertedNumber);
+                return pos + " " + returnResultInArabic((long)convertedNumber);
             }
 
 
+        } 
+        
+        private string getLessThanTwenty(long number)
+        {
+            if (number >= 0 && number <= 9)
+                return basicNumbersBelowNine[number];
+            else
+                return basicNumbersAboveNine[number - 10];
         }
+
+
         private string getTens(long number)
         {
             if (number % 10 == 0)
@@ -93,6 +98,8 @@ namespace Task_Baccah
             else
                 return basicNumbersBelowNine[number % 10] + " و " + tensNumbers[number / 10];
         }
+
+
         private string getHundereds(long number)
         {
             string hundredText = "";
@@ -106,7 +113,7 @@ namespace Task_Baccah
             if (number % 100 == 0)
                 return isUnique == true ? hundredText : basicNumbersBelowNine[number / 100] + " مائة";
             else
-                return (isUnique == true ? (hundredText) : (basicNumbersBelowNine[number / 100] + " مائة")) + " و " + returnResultInEnglish(number % 100);
+                return (isUnique == true ? (hundredText) : (basicNumbersBelowNine[number / 100] + " مائة")) + " و " + returnResultInArabic(number % 100);
 
 
         }
@@ -121,27 +128,29 @@ namespace Task_Baccah
                 isUnique = true;
             }
             if (number % 1000 == 0)
-                return (isUnique == true ? thousandText : returnResultInEnglish(number / 1000)) +(number <= 10000 ? " آلاف" : "ألف");
+                return (isUnique == true ? thousandText : (returnResultInArabic(number / 1000)) +(number < 11000||(number/1000)%100==10 ? " آلاف" : "ألف"));
             else
-                return (isUnique == true ? (thousandText) : (returnResultInEnglish(number / 1000) + (number <= 10000 ? " آلاف" : "ألف"))) + " و " + returnResultInEnglish(number % 1000);
+                return (isUnique == true ? (thousandText) : (returnResultInArabic(number / 1000) + (number < 11000 || (number / 1000) % 100 == 10 ? " آلاف" : "ألف"))) + " و " + returnResultInArabic(number % 1000);
 
 
         }
-        private string getMillions(long number) {
-            
 
+        private string getMillions(long number) {
+            string millionText = "";
             bool isUnique = false;
             if (number / 1000000 == 1 || number / 1000000 == 2)
             {
+                millionText = numbers100200[(number / 1000000) + 4];
                 isUnique = true;
             }
-            if (number % 1000 == 0)
-                return isUnique == true ? "مليون" : basicNumbersBelowNine[number / 1000000] + " ملايين";
+            if (number % 1000000 == 0)
+                return (isUnique == true ? millionText : (returnResultInArabic(number / 1000000)) + (number < 11000000 || (number / 1000000) % 100 == 10 ? " ملايين" : " مليون"));
             else
-                return (isUnique == true ? ("مليون") : (basicNumbersBelowNine[number / 1000000] + " ملايين")) + " و " + returnResultInEnglish(number % 1000000);
+                return (isUnique == true ? millionText : (returnResultInArabic(number / 1000000) + (number < 11000000 || (number / 1000000) % 100 == 10 ? " ملايين" : " مليون"))) + " و " + returnResultInArabic(number % 1000000);
+
         }
 
-        private string returnResultInEnglish(long number)
+        private string returnResultInArabic(long number)
         {
             if (number >= 0 && number <= 19)
                 return getLessThanTwenty(number);
@@ -162,11 +171,8 @@ namespace Task_Baccah
 
             else if (number < 1000000000) //600000000
             {
-                long x = number;
-                if (number % 1000000 == 0) //60
-                    return returnResultInEnglish(number / 1000000) + " مليون ";
-                else //6123456
-                    return returnResultInEnglish(number / 1000000) + " مليون " + " و " + returnResultInEnglish(number % 1000000); //6 123456
+
+                return getMillions(number);
             }
             return "not valid";
 

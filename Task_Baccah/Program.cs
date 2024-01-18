@@ -6,7 +6,7 @@
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             numbersConversion english = new numbersConversion(303000);
-            NumberConversionInArabic arabic = new NumberConversionInArabic(901235);
+            NumberConversionInArabic arabic = new NumberConversionInArabic(1000145);
             Console.WriteLine(arabic.startComputing());
             Console.WriteLine(english.startComputing());
             Console.ReadLine();
